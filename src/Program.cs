@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
+using RotnBot.Services;
 
 namespace RotnBot
 {
@@ -19,6 +21,9 @@ namespace RotnBot
         // Keep the CommandService and DI container around for use with commands.
         private readonly CommandService _commands;
         private readonly IServiceProvider _services;
+
+        // Http client for calling external APIs. Is itended to only have one per application instance.
+        public static HttpClient httpClient = new HttpClient();
 
         public Program()
         {
@@ -61,10 +66,11 @@ namespace RotnBot
         // If this method is getting pretty long, you can seperate it out into another file using partials.
         private static IServiceProvider ConfigureServices()
         {
-            var map = new ServiceCollection();
+            var map = new ServiceCollection()
             // Repeat this for all the service classes
             // and other dependencies that your commands might need.
             //.AddSingleton(new SomeServiceClass());
+            .AddSingleton(typeof(ISteamDiscordUserService), typeof(SteamDiscordUserService));
 
             // When all your required services are in the collection, build the container.
             // Tip: There's an overload taking in a 'validateScopes' bool to make sure
