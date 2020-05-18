@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -13,11 +12,11 @@ namespace RotnBot.Modules
 {
     public class DotaModule : ModuleBase<SocketCommandContext>
     {
-        private readonly ISteamDiscordUserService _steamDiscordUserService;
+        private readonly IRotnBotUserService _rotnBotUserService;
 
-        public DotaModule(ISteamDiscordUserService steamDiscordUserService)
+        public DotaModule(IRotnBotUserService rotnBotUserService)
         {
-            _steamDiscordUserService = steamDiscordUserService;
+            _rotnBotUserService = rotnBotUserService;
         }
 
         [Command("lastmatch")]
@@ -26,7 +25,7 @@ namespace RotnBot.Modules
         {
             var userInfo = Context.Message.Author;
             string discordUserId = $"{userInfo.Username}#{userInfo.Discriminator}";
-            string steamId32 = _steamDiscordUserService.GetSteamDiscordUserByDiscordId(discordUserId).SteamUserId;
+            string steamId32 = _rotnBotUserService.GetUserByDiscordId(discordUserId).SteamUserId;
 
             try
             {

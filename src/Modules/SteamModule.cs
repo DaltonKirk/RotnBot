@@ -7,11 +7,11 @@ namespace RotnBot.Modules
 {
     public class SteamModule : ModuleBase<SocketCommandContext>
     {
-        private readonly ISteamDiscordUserService _steamDiscordUserService;
+        private readonly IRotnBotUserService _rotnBotUserService;
 
-        public SteamModule(ISteamDiscordUserService steamDiscordUserService)
+        public SteamModule(IRotnBotUserService rotnBotUserService)
         {
-            _steamDiscordUserService = steamDiscordUserService;
+            _rotnBotUserService = rotnBotUserService;
         }
 
         [Command("setmysteamid")]
@@ -30,7 +30,7 @@ namespace RotnBot.Modules
 
             string discordUserId = $"{Context.Message.Author.Username}#{Context.Message.Author.Discriminator}";
 
-            _steamDiscordUserService.AddOrUpdateSteamDiscordUser(new SteamDiscordUser { SteamUserId = steamId, DiscordUserId = discordUserId });
+            _rotnBotUserService.AddOrUpdateUser(new RotnBotUser { SteamUserId = steamId, DiscordUserId = discordUserId });
 
             await ReplyAsync("Steam ID set. For " + discordUserId);
         }
@@ -41,7 +41,7 @@ namespace RotnBot.Modules
         public async Task MySteamId()
         {
             string discordUserId = $"{Context.Message.Author.Username}#{Context.Message.Author.Discriminator}";
-            SteamDiscordUser user = _steamDiscordUserService.GetSteamDiscordUserByDiscordId(discordUserId);
+            RotnBotUser user = _rotnBotUserService.GetUserByDiscordId(discordUserId);
             if (user != null)
             {
                 await ReplyAsync($"{discordUserId}, your steam ID is {user.SteamUserId}");

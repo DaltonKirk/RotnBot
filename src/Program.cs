@@ -70,7 +70,7 @@ namespace RotnBot
             // Repeat this for all the service classes
             // and other dependencies that your commands might need.
             //.AddSingleton(new SomeServiceClass());
-            .AddSingleton(typeof(ISteamDiscordUserService), typeof(SteamDiscordUserService));
+            .AddSingleton(typeof(IRotnBotUserService), typeof(RotnBotUserService));
 
             // When all your required services are in the collection, build the container.
             // Tip: There's an overload taking in a 'validateScopes' bool to make sure
