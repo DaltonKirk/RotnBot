@@ -9,6 +9,7 @@ using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using RotnBot.Services;
+using Discord.Addons.Interactive;
 
 namespace RotnBot
 {
@@ -16,7 +17,7 @@ namespace RotnBot
     {
         public static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
 
-        private DiscordSocketClient _client;
+        private static DiscordSocketClient _client;
 
         // Keep the CommandService and DI container around for use with commands.
         private readonly CommandService _commands;
@@ -70,7 +71,8 @@ namespace RotnBot
             // Repeat this for all the service classes
             // and other dependencies that your commands might need.
             //.AddSingleton(new SomeServiceClass());
-            .AddSingleton(typeof(IRotnBotUserService), typeof(RotnBotUserService));
+            .AddSingleton(typeof(IRotnBotUserService), typeof(RotnBotUserService))
+            .AddSingleton(new InteractiveService(_client));
 
             // When all your required services are in the collection, build the container.
             // Tip: There's an overload taking in a 'validateScopes' bool to make sure
