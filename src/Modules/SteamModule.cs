@@ -30,7 +30,7 @@ namespace RotnBot.Modules
 
             string discordUserId = $"{Context.Message.Author.Username}#{Context.Message.Author.Discriminator}";
 
-            _rotnBotUserService.AddOrUpdateUser(new RotnBotUser { SteamUserId = steamId, DiscordUserId = discordUserId });
+            _rotnBotUserService.AddOrUpdateUser(new RotnBotUser(Context.Message.Author, steamId));
 
             await ReplyAsync("Steam ID set. For " + discordUserId);
         }

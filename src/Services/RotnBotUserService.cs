@@ -27,7 +27,15 @@ namespace RotnBot.Services
 
         public RotnBotUser GetUser(SocketUser user)
         {
-            return RotnBotUserCollection.Where(e => e.DiscordUserId == user.ToString()).FirstOrDefault();
+            var rotnBotUser = RotnBotUserCollection.Where(e => e.DiscordUserId == user.ToString()).FirstOrDefault();
+            if (rotnBotUser != null)
+            {
+                return rotnBotUser;
+            }
+            else
+            {
+                return AddRotnBotUser(user);
+            }
         }
 
         public RotnBotUser GetUserByDiscordId(string discordUserId)
@@ -52,6 +60,13 @@ namespace RotnBot.Services
         {
             RotnBotUserCollection.Add(user);
             SaveJsonToDisk(filename, RotnBotUserCollection);
+        }
+
+        private RotnBotUser AddRotnBotUser(SocketUser user)
+        {
+            var rotnBotUser = new RotnBotUser(user);
+            AddRotnBotUser(rotnBotUser);
+            return rotnBotUser;
         }
 
         private void UpdateRotnBotUser(RotnBotUser user)
