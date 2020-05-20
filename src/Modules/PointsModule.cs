@@ -58,7 +58,7 @@ namespace RotnBot.Modules
         {
             RotnBotUser user = _rotnBotUserService.GetUser(Context.Message.Author);
             int cost  = 30;
-            if (user.Points <= cost)
+            if (user.Points < cost)
             {
                 await ReplyAsync($"{Context.Message.Author}, you need { (cost - user.Points) } more points to afford a chest");
                 return;
@@ -67,6 +67,7 @@ namespace RotnBot.Modules
             Random rnd = new Random();
             int newPoints  = PoinstChests[rnd.Next(0, PoinstChests.Length)];
 
+            user.Points -= cost;
             user.Points += newPoints;
             _rotnBotUserService.AddOrUpdateUser(user);
 
