@@ -24,8 +24,7 @@ namespace RotnBot.Modules
         public async Task LastMatchAsync()
         {
             var userInfo = Context.Message.Author;
-            string discordUserId = $"{userInfo.Username}#{userInfo.Discriminator}";
-            string steamId32 = _rotnBotUserService.GetUserByDiscordId(discordUserId).SteamUserId;
+            string steamId32 = _rotnBotUserService.GetUserByDiscordId(userInfo.Id).SteamUserId;
 
             try
             {

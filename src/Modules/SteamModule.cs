@@ -40,15 +40,14 @@ namespace RotnBot.Modules
         [Alias("steamid")]
         public async Task MySteamId()
         {
-            string discordUserId = $"{Context.Message.Author.Username}#{Context.Message.Author.Discriminator}";
-            RotnBotUser user = _rotnBotUserService.GetUserByDiscordId(discordUserId);
+            RotnBotUser user = _rotnBotUserService.GetUserByDiscordId(Context.Message.Author.Id);
             if (user != null)
             {
-                await ReplyAsync($"{discordUserId}, your steam ID is {user.SteamUserId}");
+                await ReplyAsync($"{Context.Message.Author}, your steam ID is {user.SteamUserId}");
             }
             else
             {
-                await ReplyAsync($"No Steam ID set for {discordUserId}");
+                await ReplyAsync($"No Steam ID set for {Context.Message.Author}");
             }
         }
 

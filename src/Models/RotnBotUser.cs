@@ -10,13 +10,15 @@ namespace RotnBot.Models
         {
             if (user != null)
             {
-                DiscordUserId = user.ToString();
+                DiscordUserId = user.Id;
             }
         }
 
-        public string DiscordUserId { get; set; }
+        public ulong DiscordUserId { get; set; }
         public string SteamUserId { get; set; }
         public int Points { get; set; }
         public DateTime LastChestOpened { get; set; }
+        public int ChestsPurchased { get; set; }
+        public bool DotaNotificationsOn { get; set; }
     }
 }

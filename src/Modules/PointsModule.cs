@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -41,6 +42,7 @@ namespace RotnBot.Modules
                 return;
             }
             
+            
             Random rnd = new Random();
             int newPoints  = PoinstChests[rnd.Next(0, PoinstChests.Length)];
 
@@ -69,9 +71,23 @@ namespace RotnBot.Modules
 
             user.Points -= cost;
             user.Points += newPoints;
+            user.ChestsPurchased++;
+
             _rotnBotUserService.AddOrUpdateUser(user);
 
-            await ReplyAsync($"{Context.Message.Author}, you have recieved {newPoints} {(newPoints > 1 ? "points" : "point")}\nYou now have {user.Points} {(user.Points > 1 ? "points" : "point")}");
+            StringBuilder sb = new StringBuilder();
+
+
+            sb.AppendLine($"{Context.Message.Author} spent {cost} on a points chest");
+            if (newPoints == 100)
+            {
+                sb.AppendLine(":moneybag::moneybag::moneybag: Jackpot! :moneybag::moneybag::moneybag:");
+            }
+            sb.AppendLine($"The chest contained {newPoints} points");
+            sb.AppendLine($"{(newPoints >= cost ? "You gain" : "You lose")} {( newPoints - cost )} points");
+            sb.AppendLine($"You have a new total of {user.Points} points");
+
+            await ReplyAsync(sb.ToString());
         }
 
         [Command("leaderboard")]
@@ -87,10 +103,18 @@ namespace RotnBot.Modules
 
             foreach (var user in users)
             {
-                embedBuilder.AddField(user.DiscordUserId, user.Points);
+                embedBuilder.AddField(Context.Client.GetUser(user.DiscordUserId).ToString(), user.Points);
             }
             
             await ReplyAsync("", false, embedBuilder.Build());
+        }
+
+        [Command("chestsbought")]
+        [Summary("Shows the number of chests you have bought")]
+        public async Task ShowChestsBoughtAsync()
+        {
+            var user = _rotnBotUserService.GetUser(Context.Message.Author);
+            await ReplyAsync($"You have bought {user.ChestsPurchased} chests");
         }
     }
 }

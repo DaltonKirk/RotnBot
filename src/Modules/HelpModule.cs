@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Discord;
 using Discord.Commands;
@@ -29,11 +30,11 @@ namespace RotnBot.Modules
             {
                 // Get the command Summary attribute information
                 string embedFieldText = command.Summary ?? "No description available\n";
-
-                embedBuilder.AddField(command.Name, embedFieldText);
+                
+                embedBuilder.AddField("/" + command.Name, embedFieldText);
             }
 
-            return ReplyAsync("Here's a list of commands and their description:  \nAll commands need to be prefixed with rotn", false, embedBuilder.Build());
+            return ReplyAsync("Here's a list of commands and their description:  \nAll commands need to be prefixed with /", false, embedBuilder.Build());
         }
     }
 }

@@ -27,7 +27,7 @@ namespace RotnBot.Services
 
         public RotnBotUser GetUser(SocketUser user)
         {
-            var rotnBotUser = RotnBotUserCollection.Where(e => e.DiscordUserId == user.ToString()).FirstOrDefault();
+            var rotnBotUser = RotnBotUserCollection.Where(e => e.DiscordUserId == user.Id).FirstOrDefault();
             if (rotnBotUser != null)
             {
                 return rotnBotUser;
@@ -38,7 +38,7 @@ namespace RotnBot.Services
             }
         }
 
-        public RotnBotUser GetUserByDiscordId(string discordUserId)
+        public RotnBotUser GetUserByDiscordId(ulong discordUserId)
         {
             return RotnBotUserCollection.Where(e => e.DiscordUserId == discordUserId).FirstOrDefault();
         }
@@ -71,15 +71,10 @@ namespace RotnBot.Services
 
         private void UpdateRotnBotUser(RotnBotUser user)
         {
-            foreach(var existingUser in RotnBotUserCollection)
+            RotnBotUser existingUser = RotnBotUserCollection.Where(e => e.DiscordUserId == user.DiscordUserId).FirstOrDefault();
+            if (existingUser != null)
             {
-                if (existingUser.DiscordUserId == user.DiscordUserId)
-                {
-                    existingUser.SteamUserId = user.SteamUserId;
-                    existingUser.Points = user.Points;
-                    existingUser.LastChestOpened = user.LastChestOpened;
-                    break;
-                }
+                existingUser = user;
             }
             SaveJsonToDisk(filename, RotnBotUserCollection);
         }

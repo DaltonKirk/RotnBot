@@ -129,6 +129,15 @@ namespace RotnBot
             await Task.Delay(Timeout.Infinite);
         }
 
+        private Task HelloThere()
+        {
+            foreach (var item in _client.Guilds)
+            {
+                item.DefaultChannel.SendMessageAsync("https://media1.tenor.com/images/a83b88b76aee5b153240e9950d52d53d/tenor.gif?itemid=11548408");
+            }
+            return Task.CompletedTask;
+        }
+
         private async Task InitCommands()
         {
             // Either search the program and add all Module classes that can be found.
@@ -163,8 +172,8 @@ namespace RotnBot
             }
 
             // Create a number to track where the prefix ends and the command begins
-            int pos = 4;
-            if (msg.HasStringPrefix("rotn ", ref pos))
+            int pos = 0;
+            if (msg.HasCharPrefix('/', ref pos))
             {
                 // Create a Command Context.
                 var context = new SocketCommandContext(_client, msg);
