@@ -10,6 +10,8 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using RotnBot.Services;
 using Discord.Addons.Interactive;
+using System.Net.Sockets;
+using RotnBot.Helpers;
 
 namespace RotnBot
 {
@@ -21,10 +23,21 @@ namespace RotnBot
 
         // Keep the CommandService and DI container around for use with commands.
         private readonly CommandService _commands;
+
         private readonly IServiceProvider _services;
 
-        // Http client for calling external APIs. Is itended to only have one per application instance.
+        private readonly IServerStatusService _serverStatusService;
+
+        // Http client for calling external APIs. One per application instance is best practice.
         public static HttpClient httpClient = new HttpClient();
+
+        const ulong _serverId = 231399120269475840;
+
+        const ulong _channelId = 231399120269475840;
+        
+        // const ulong _serverId = 451086723217096725;
+
+        // const ulong _channelId = 451086723687120906;
 
         public Program()
         {
@@ -53,6 +66,8 @@ namespace RotnBot
                 // for example, case-insensitive commands.
                 CaseSensitiveCommands = false,
             });
+
+            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId);
 
             // Subscribe the logging handler to both the client and the CommandService.
             _client.Log += Log;
@@ -125,19 +140,12 @@ namespace RotnBot
             await _client.LoginAsync(TokenType.Bot, token);
             await _client.StartAsync();
 
+            _client.Ready += _serverStatusService.Start;
+
             // Wait infinitely so your bot actually stays connected.
             await Task.Delay(Timeout.Infinite);
         }
-
-        private Task HelloThere()
-        {
-            foreach (var item in _client.Guilds)
-            {
-                item.DefaultChannel.SendMessageAsync("https://media1.tenor.com/images/a83b88b76aee5b153240e9950d52d53d/tenor.gif?itemid=11548408");
-            }
-            return Task.CompletedTask;
-        }
-
+        
         private async Task InitCommands()
         {
             // Either search the program and add all Module classes that can be found.
@@ -165,10 +173,10 @@ namespace RotnBot
             if (msg.Author.ToString() == "Taylor#7371")
             {
                 Random rand = new Random();
-                 if (rand.Next(1,100) <= 10) 
-                 {
+                if (rand.Next(1, 100) <= 10)
+                {
                     await msg.Channel.SendMessageAsync("Shut up Taylor");
-                 }
+                }
             }
 
             // Create a number to track where the prefix ends and the command begins
