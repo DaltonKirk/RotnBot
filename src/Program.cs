@@ -153,6 +153,15 @@ namespace RotnBot
             // We don't want the bot to respond to itself or other bots.
             if (msg.Author.Id == _client.CurrentUser.Id || msg.Author.IsBot) return;
 
+            if (msg.Author.ToString() == "Taylor#7371")
+            {
+                Random rand = new Random();
+                 if (rand.Next(1,100) <= 10) 
+                 {
+                    await msg.Channel.SendMessageAsync("Shut up Taylor");
+                 }
+            }
+
             // Create a number to track where the prefix ends and the command begins
             int pos = 4;
             if (msg.HasStringPrefix("rotn ", ref pos))
