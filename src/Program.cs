@@ -45,7 +45,7 @@ namespace RotnBot
             }
         }
 
-        const bool _devMode = true;
+        const bool _devMode = false;
 
         public Program()
         {
