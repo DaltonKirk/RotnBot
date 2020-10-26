@@ -29,13 +29,23 @@ namespace RotnBot
         // Http client for calling external APIs. One per application instance is best practice.
         public static HttpClient httpClient = new HttpClient();
 
-        const ulong _serverId = 231399120269475840;
+        ulong _serverId
+        {
+            get
+            {
+                return _devMode ? 451086723217096725 : 231399120269475840;
+            }
+        }
 
-        const ulong _channelId = 231399120269475840;
-        
-        // const ulong _serverId = 451086723217096725;
+        ulong _channelId
+        {
+            get
+            {
+                return _devMode ? 451086723687120906 : 231399120269475840;
+            }
+        }
 
-        // const ulong _channelId = 451086723687120906;
+        const bool _devMode = true;
 
         public Program()
         {
@@ -133,7 +143,7 @@ namespace RotnBot
             await InitCommands();
 
             //Load token
-            var token = File.ReadAllText("token.txt");
+            var token = _devMode ? File.ReadAllText("dev-token.txt") : File.ReadAllText("token.txt");
 
             // Login and connect.
             await _client.LoginAsync(TokenType.Bot, token);
@@ -144,7 +154,7 @@ namespace RotnBot
             // Wait infinitely so your bot actually stays connected.
             await Task.Delay(Timeout.Infinite);
         }
-        
+
         private async Task InitCommands()
         {
             // Either search the program and add all Module classes that can be found.
