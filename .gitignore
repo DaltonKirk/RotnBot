@@ -1,8 +1,5 @@
-token.txt
 bin/
 obj/
 .vscode/
-linux/deploy.bat
-src/steamids.json
-linux/steanids.bat
-linux/token.bat
+linux/
+src/data/
