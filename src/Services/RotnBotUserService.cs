@@ -7,7 +7,7 @@ namespace RotnBot.Services
 {
     public class RotnBotUserService : JsonFileLoader, IRotnBotUserService
     {
-        private const string filename = "steamids.json";
+        private const string filename = "data/steamids.json";
         private readonly List<RotnBotUser> RotnBotUserCollection = new List<RotnBotUser>();
 
         public RotnBotUserService()

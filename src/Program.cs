@@ -143,7 +143,7 @@ namespace RotnBot
             await InitCommands();
 
             //Load token
-            var token = _devMode ? File.ReadAllText("dev-token.txt") : File.ReadAllText("token.txt");
+            var token = _devMode ? File.ReadAllText("data/dev-token.txt") : File.ReadAllText("data/token.txt");
 
             // Login and connect.
             await _client.LoginAsync(TokenType.Bot, token);

@@ -4,11 +4,12 @@ namespace RotnBot.Services
     {
         public AppSettingsService()
         {
-            appSettings = LoadJsonFromDisk<AppSettings>(filename)?[0];
+            var data = LoadJsonFromDisk<AppSettings>(filename);
+            if (data.Count > 0) appSettings = data[0];
             if (appSettings == null) appSettings = new AppSettings();
         }
 
-        private const string filename = "appsettings.json";
+        private const string filename = "data/appsettings.json";
 
         private AppSettings appSettings;
 
