@@ -12,6 +12,10 @@ namespace RotnBot.Services
         {
             try
             {
+                if (!File.Exists(filename))
+                {
+                    File.WriteAllText(filename, "");
+                }
                 string json = System.IO.File.ReadAllText(filename);
                 return JsonConvert.DeserializeObject<List<T>>(json);
             }

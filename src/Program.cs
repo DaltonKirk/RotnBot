@@ -10,8 +10,6 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using RotnBot.Services;
 using Discord.Addons.Interactive;
-using System.Net.Sockets;
-using RotnBot.Helpers;
 
 namespace RotnBot
 {
@@ -67,7 +65,7 @@ namespace RotnBot
                 CaseSensitiveCommands = false,
             });
 
-            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId);
+            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId, new AppSettingsService());
 
             // Subscribe the logging handler to both the client and the CommandService.
             _client.Log += Log;
@@ -87,6 +85,7 @@ namespace RotnBot
             // and other dependencies that your commands might need.
             //.AddSingleton(new SomeServiceClass());
             .AddSingleton(typeof(IRotnBotUserService), typeof(RotnBotUserService))
+            .AddSingleton(typeof(IAppSettingsService), typeof(AppSettingsService))
             .AddSingleton(new InteractiveService(_client));
 
             // When all your required services are in the collection, build the container.

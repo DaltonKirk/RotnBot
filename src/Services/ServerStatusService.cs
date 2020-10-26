@@ -8,12 +8,15 @@ namespace RotnBot.Services
 {
     public class ServerStatusService : IServerStatusService
     {
-        public ServerStatusService(DiscordSocketClient client, ulong serverId, ulong channelId)
+        public ServerStatusService(DiscordSocketClient client, ulong serverId, ulong channelId, IAppSettingsService appSettingsService)
         {
             _client = client;
             _serverId = serverId;
             _channelId = channelId;
+            _appSettingsService = appSettingsService;
         }
+
+        private IAppSettingsService _appSettingsService;
 
         private DiscordSocketClient _client;
 
@@ -43,13 +46,13 @@ namespace RotnBot.Services
 
         private void Check(object state)
         {
-            if (ServerUp("localhost", 25565))
+            if (ServerUp(_appSettingsService.GetServerStatusServiceIP(), _appSettingsService.GetServerStatusServicePort()))
             {
                 if (!_serverIsUp)
                 {
                     _serverIsUp = true;
                     _channel.SendMessageAsync("Minecraft server is up!");
-                    _timer = new Timer(Check, null, 0, 1000 * 10);
+                    _timer.Change(1000 * 60, 1000 * 60);
                 }
             }
             else
@@ -57,8 +60,8 @@ namespace RotnBot.Services
                 if (_serverIsUp)
                 {
                     _serverIsUp = false;
-                    _channel.SendMessageAsync("Mincraft server has gone down :(");
-                    _timer = new System.Threading.Timer(Check, null, 0, 1000 * 10);
+                    _channel.SendMessageAsync("Minecraft server has gone down :(");
+                    _timer.Change(1000 * 60, 1000 * 60);
                 }
             }
         }
