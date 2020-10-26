@@ -4,5 +4,6 @@ namespace RotnBot.Services
     {
         public string ServerStatusServiceIP { get; set; }
         public int ServerStatusServicePort { get; set; }
+        public string Version { get; set; }
     }
 }

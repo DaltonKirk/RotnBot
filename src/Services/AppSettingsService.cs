@@ -1,12 +1,13 @@
+using Newtonsoft.Json;
+
 namespace RotnBot.Services 
 {
     public class AppSettingsService : JsonFileLoader, IAppSettingsService
     {
         public AppSettingsService()
         {
-            var data = LoadJsonFromDisk<AppSettings>(filename);
-            if (data.Count > 0) appSettings = data[0];
-            if (appSettings == null) appSettings = new AppSettings();
+            string json = System.IO.File.ReadAllText(filename);
+            appSettings = JsonConvert.DeserializeObject<AppSettings>(json);
         }
 
         private const string filename = "data/appsettings.json";
@@ -33,6 +34,11 @@ namespace RotnBot.Services
         {
             appSettings.ServerStatusServicePort = newPort;
             SaveJsonToDisk(filename, appSettings);
+        }
+
+        public string GetVersion()
+        {
+            return appSettings.Version;
         }
     }
 }
