@@ -2,27 +2,22 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Discord.WebSocket;
+using RotnBot.Constants;
 using RotnBot.Helpers;
 
 namespace RotnBot.Services
 {
     public class ServerStatusService : IServerStatusService
     {
-        public ServerStatusService(DiscordSocketClient client, ulong serverId, ulong channelId, IAppSettingsService appSettingsService)
+        public ServerStatusService(DiscordSocketClient client, IAppSettingsService appSettingsService)
         {
             _client = client;
-            _serverId = serverId;
-            _channelId = channelId;
             _appSettingsService = appSettingsService;
         }
 
         private IAppSettingsService _appSettingsService;
 
         private DiscordSocketClient _client;
-
-        private ulong _serverId;
-
-        private ulong _channelId;
 
         private Timer _timer;
 
@@ -34,10 +29,10 @@ namespace RotnBot.Services
 
         public Task Start()
         {
-            SocketGuild server = DiscordHelpers.GetServer(_serverId, _client);
+            SocketGuild server = DiscordHelpers.GetServer(DiscordIds.ServerId, _client);
             if (server != null)
             {
-                _channel = DiscordHelpers.GetTextChannel(server, _channelId);
+                _channel = DiscordHelpers.GetTextChannel(server, DiscordIds.ChannelId);
                 if (_channel != null)
                 {
                     _timer = new System.Threading.Timer(Check, null, 0, 1000 * PingDelaySeconds);

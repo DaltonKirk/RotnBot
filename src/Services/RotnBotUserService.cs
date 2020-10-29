@@ -2,17 +2,17 @@ using System.Linq;
 using System.Collections.Generic;
 using RotnBot.Models;
 using Discord.WebSocket;
+using RotnBot.Constants;
 
 namespace RotnBot.Services
 {
     public class RotnBotUserService : JsonFileLoader, IRotnBotUserService
     {
-        private const string filename = "data/steamids.json";
         private readonly List<RotnBotUser> RotnBotUserCollection = new List<RotnBotUser>();
 
         public RotnBotUserService()
         {
-            RotnBotUserCollection = LoadJsonFromDisk<RotnBotUser>(filename);
+            RotnBotUserCollection = LoadJsonFromDisk<RotnBotUser>(Filenames.SteamIds);
         }
 
         public RotnBotUser[] GetAll()
@@ -59,7 +59,7 @@ namespace RotnBot.Services
         private void AddRotnBotUser(RotnBotUser user)
         {
             RotnBotUserCollection.Add(user);
-            SaveJsonToDisk(filename, RotnBotUserCollection);
+            SaveJsonToDisk(Filenames.SteamIds, RotnBotUserCollection);
         }
 
         private RotnBotUser AddRotnBotUser(SocketUser user)
@@ -76,7 +76,7 @@ namespace RotnBot.Services
             {
                 existingUser = user;
             }
-            SaveJsonToDisk(filename, RotnBotUserCollection);
+            SaveJsonToDisk(Filenames.SteamIds, RotnBotUserCollection);
         }
     }
 }

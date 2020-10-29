@@ -10,6 +10,7 @@ using Discord.WebSocket;
 using Microsoft.Extensions.DependencyInjection;
 using RotnBot.Services;
 using Discord.Addons.Interactive;
+using RotnBot.Constants;
 
 namespace RotnBot
 {
@@ -28,7 +29,7 @@ namespace RotnBot
                 CaseSensitiveCommands = false,
             });
 
-            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId, new AppSettingsService());
+            _serverStatusService = new ServerStatusService(_client, new AppSettingsService());
             _client.Log += Log;
             _commands.Log += Log;
             _services = ConfigureServices();
@@ -46,23 +47,7 @@ namespace RotnBot
 
         public static HttpClient httpClient = new HttpClient();
 
-        ulong _serverId
-        {
-            get
-            {
-                return _devMode ? 451086723217096725 : 231399120269475840;
-            }
-        }
-
-        ulong _channelId
-        {
-            get
-            {
-                return _devMode ? 451086723687120906 : 231399120269475840;
-            }
-        }
-
-        const bool _devMode = true;
+        public static bool _devMode = true;
 
         private static IServiceProvider ConfigureServices()
         {
@@ -105,7 +90,7 @@ namespace RotnBot
             await InitCommands();
 
             //Load token
-            var token = _devMode ? File.ReadAllText("data/dev-token.txt") : File.ReadAllText("data/token.txt");
+            var token = File.ReadAllText(Filenames.Token);
 
             // Login and connect.
             await _client.LoginAsync(TokenType.Bot, token);
