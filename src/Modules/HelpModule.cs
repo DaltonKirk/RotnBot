@@ -21,7 +21,7 @@ namespace RotnBot.Modules
         [Alias("cmds", "commands")]
         public Task HelpAsync()
         {
-            var commands = _commandService.Commands;
+            var commands = _commandService.Commands.Where(cmd => cmd.Remarks != "hidden");
             EmbedBuilder embedBuilder = new EmbedBuilder();
             
             embedBuilder.WithTitle("List of commands");

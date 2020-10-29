@@ -16,6 +16,7 @@ namespace RotnBot.Modules
         [Command("setserverstatusip")]
         [Summary("Sets the default server IP to check")]
         [Alias("setip")]
+        [Remarks("hidden")]
         public async Task SetServerStatusServiceIP(string ip)
         {
             _appSettingsService.SetServerStatusServiceIP(ip);
@@ -25,6 +26,7 @@ namespace RotnBot.Modules
         [Command("setserverstatusport")]
         [Summary("Sets the default server Port to check")]
         [Alias("setport")]
+        [Remarks("hidden")]
         public async Task SetServerStatusServicePort(int port)
         {
             _appSettingsService.SetServerStatusServicePort(port);
