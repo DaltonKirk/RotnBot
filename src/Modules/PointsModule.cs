@@ -103,7 +103,11 @@ namespace RotnBot.Modules
 
             foreach (var user in users)
             {
-                embedBuilder.AddField(Context.Client.GetUser(user.DiscordUserId).ToString(), user.Points);
+                var socketUser = Context.Client.GetUser(user.DiscordUserId);
+                if (socketUser != null)
+                {
+                    embedBuilder.AddField(socketUser.ToString(), user.Points);
+                }
             }
             
             await ReplyAsync("", false, embedBuilder.Build());
