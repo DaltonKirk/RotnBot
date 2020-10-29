@@ -30,6 +30,8 @@ namespace RotnBot.Services
 
         private ISocketMessageChannel _channel;
 
+        const int PingDelaySeconds = 240;
+
         public Task Start()
         {
             SocketGuild server = DiscordHelpers.GetServer(_serverId, _client);
@@ -38,7 +40,7 @@ namespace RotnBot.Services
                 _channel = DiscordHelpers.GetTextChannel(server, _channelId);
                 if (_channel != null)
                 {
-                    _timer = new System.Threading.Timer(Check, null, 0, 1000 * 10);
+                    _timer = new System.Threading.Timer(Check, null, 0, 1000 * PingDelaySeconds);
                 }
             }
             return Task.CompletedTask;
@@ -52,7 +54,7 @@ namespace RotnBot.Services
                 {
                     _serverIsUp = true;
                     _channel.SendMessageAsync("Minecraft server is up!");
-                    _timer.Change(1000 * 60, 1000 * 60);
+                    _timer.Change(1000 * PingDelaySeconds, 1000 * PingDelaySeconds);
                 }
             }
             else
@@ -61,7 +63,7 @@ namespace RotnBot.Services
                 {
                     _serverIsUp = false;
                     _channel.SendMessageAsync("Minecraft server has gone down :(");
-                    _timer.Change(1000 * 60, 1000 * 60);
+                    _timer.Change(1000 * PingDelaySeconds, 1000 * PingDelaySeconds);
                 }
             }
         }
