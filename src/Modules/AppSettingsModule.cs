@@ -30,13 +30,5 @@ namespace RotnBot.Modules
             _appSettingsService.SetServerStatusServicePort(port);
             await ReplyAsync("New port set.");
         }
-
-        [Command("version")]
-        [Summary("Gets the version of the bot")]
-        [Alias("v")]
-        public async Task GetVersion()
-        {
-            await ReplyAsync(_appSettingsService.GetVersion());
-        }
     }
 }

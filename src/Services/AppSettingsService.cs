@@ -35,10 +35,5 @@ namespace RotnBot.Services
             appSettings.ServerStatusServicePort = newPort;
             SaveJsonToDisk(filename, appSettings);
         }
-
-        public string GetVersion()
-        {
-            return appSettings.Version;
-        }
     }
 }
