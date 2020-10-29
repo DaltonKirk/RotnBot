@@ -15,6 +15,25 @@ namespace RotnBot
 {
     public class Program
     {
+        public Program()
+        {
+            _client = new DiscordSocketClient(new DiscordSocketConfig
+            {
+                LogLevel = LogSeverity.Info,
+            });
+
+            _commands = new CommandService(new CommandServiceConfig
+            {
+                LogLevel = LogSeverity.Info,
+                CaseSensitiveCommands = false,
+            });
+
+            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId, new AppSettingsService());
+            _client.Log += Log;
+            _commands.Log += Log;
+            _services = ConfigureServices();
+        }
+
         public static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
 
         private static DiscordSocketClient _client;
@@ -45,25 +64,6 @@ namespace RotnBot
 
         const bool _devMode = true;
 
-        public Program()
-        {
-            _client = new DiscordSocketClient(new DiscordSocketConfig
-            {
-                LogLevel = LogSeverity.Info,
-            });
-
-            _commands = new CommandService(new CommandServiceConfig
-            {
-                LogLevel = LogSeverity.Info,
-                CaseSensitiveCommands = false,
-            });
-
-            _serverStatusService = new ServerStatusService(_client, _serverId, _channelId, new AppSettingsService());
-            _client.Log += Log;
-            _commands.Log += Log;
-            _services = ConfigureServices();
-        }
-
         private static IServiceProvider ConfigureServices()
         {
             var map = new ServiceCollection()
@@ -92,7 +92,7 @@ namespace RotnBot
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     break;
             }
-            
+
             Console.WriteLine($"{DateTime.Now,-19} [{message.Severity,8}] {message.Source}: {message.Message} {message.Exception}");
             Console.ResetColor();
 
