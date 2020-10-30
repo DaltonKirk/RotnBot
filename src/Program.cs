@@ -124,8 +124,8 @@ namespace RotnBot
                 }
             }
 
-            int prefixEndIndex = 0;
-            if (msg.HasCharPrefix('/', ref prefixEndIndex))
+            int prefixEndIndex = Constants.RotnBot.CommandPrefix.Length - 1;
+            if (msg.HasStringPrefix(Constants.RotnBot.CommandPrefix, ref prefixEndIndex))
             {
                 var context = new SocketCommandContext(_client, msg);
                 var result = await _commands.ExecuteAsync(context, prefixEndIndex, _services);
