@@ -28,11 +28,11 @@ namespace RotnBot.Modules
                 }
             }
 
-            string discordUserId = $"{Context.Message.Author.Username}#{Context.Message.Author.Discriminator}";
+            RotnBotUser rotnBotUser = _rotnBotUserService.GetUser(Context.Message.Author);
+            rotnBotUser.SteamUserId = steamId;
+            _rotnBotUserService.AddOrUpdateUser(rotnBotUser);
 
-            _rotnBotUserService.AddOrUpdateUser(new RotnBotUser(Context.Message.Author, steamId));
-
-            await ReplyAsync("Steam ID set. For " + discordUserId);
+            await ReplyAsync("Steam ID set. For " + Context.Message.Author.ToString());
         }
 
         [Command("mysteamid")]

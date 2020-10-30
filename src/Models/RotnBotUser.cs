@@ -6,11 +6,18 @@ namespace RotnBot.Models
     public class RotnBotUser
     {
         public RotnBotUser() {}
-        public RotnBotUser(SocketUser user, string steamId32 = "")
+
+        /// <summary>
+        /// Use to create new users only.
+        /// </summary>
+        /// <param name="user">Discord.Net socket user to create a RotnBotUser from.</param>
+        public RotnBotUser(SocketUser user) 
         {
             if (user != null)
             {
                 DiscordUserId = user.Id;
+                Username = user.ToString();
+                Points = 30;
             }
         }
 
@@ -20,5 +27,6 @@ namespace RotnBot.Models
         public DateTime LastChestOpened { get; set; }
         public int ChestsPurchased { get; set; }
         public bool DotaNotificationsOn { get; set; }
+        public string Username { get; set; }
     }
 }
